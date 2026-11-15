@@ -88,6 +88,7 @@
     return t > 0 ? clamp(-r.top / t) : (r.top < 0 ? 1 : 0);
   };
   const scenes = [];
+  const sizers = [];
 
   /* Kapitel 1: Flug durch den Werdegang */
   const journey = document.querySelector('.journey');
@@ -149,7 +150,18 @@
   const dolly = document.querySelector('.dolly');
   if (dolly) {
     const screen = dolly.querySelector('.dolly__screen');
-    const img = screen.querySelector('img');
+    const img = screen.querySelector('.dolly__page');
+    /* beide Bildteile laden, sobald die Szene in die Nähe kommt (Lazy Loading greift im verschobenen Rahmen nicht) */
+    const dio = new IntersectionObserver((en) => {
+      if (en.some((e) => e.isIntersecting)) { img.querySelectorAll('img').forEach((i) => { i.loading = 'eager'; }); dio.disconnect(); }
+    }, { rootMargin: '600px 0px' });
+    dio.observe(dolly);
+    /* Szenenlänge an die Seitenlänge anpassen, damit die Seite ruhig durchläuft */
+    sizers.push(() => {
+      if (!motion()) { dolly.style.height = ''; return; }
+      const travel = Math.max(0, img.offsetHeight - screen.clientHeight);
+      dolly.style.height = Math.round(Math.max(2.6 * innerHeight, innerHeight + travel / 5 / 0.58)) + 'px';
+    });
     scenes.push(() => {
       if (!motion()) { dolly.style.cssText = ''; return; }
       const p = progress(dolly);
@@ -251,7 +263,7 @@
     const edge = sec.getBoundingClientRect().left + parseFloat(getComputedStyle(sec).paddingLeft);
     document.documentElement.style.setProperty('--edge', edge.toFixed(1) + 'px');
   }
-  function build() { setEdge(); sizeHscrolls(); runScenes(); }
+  function build() { setEdge(); sizeHscrolls(); sizers.forEach((f) => f()); runScenes(); }
 
   function runScenes() { updateLayers(); scenes.forEach((f) => f()); }
   let ticking = false;
