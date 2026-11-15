@@ -321,7 +321,6 @@ html:not(.js) .loupe{display:none}
 .hero__title{font:680 clamp(2.8rem,6.2vw,5.8rem)/.93 var(--display);letter-spacing:-.045em;margin:0 0 24px}
 .hero__lead{margin:0 0 28px;max-width:44ch;font-size:clamp(1.05rem,1.3vw,1.2rem)}
 .hero__actions{display:flex;flex-wrap:wrap;gap:10px}
-.hero__note{margin:18px 0 0;font-size:.92rem;color:var(--ink-2)}
 .hero__board{--e:1;position:relative;aspect-ratio:100/92;container-type:inline-size}
 .tile{position:absolute;left:calc(var(--l) * 1%);top:calc(var(--t) / 92 * 100%);width:calc(var(--w) * 1%);height:calc(var(--h) / 92 * 100%);background:#fff;padding:5px;box-shadow:0 18px 36px -22px rgba(27,27,26,calc(.35 + (1 - var(--e)) * .3));transform:translate(calc(var(--sx) * (1 - var(--e)) * .6cqw),calc(var(--sy) * (1 - var(--e)) * .6cqw)) rotate(calc(var(--sr) * (1 - var(--e)) * 1deg)) scale(calc(1 + (1 - var(--e)) * .08));will-change:transform}
 .tile img{width:100%;height:100%;object-fit:cover}
